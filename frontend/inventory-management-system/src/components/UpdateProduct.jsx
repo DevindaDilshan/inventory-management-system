@@ -4,6 +4,7 @@ import { NavLink, useParams, useNavigate } from 'react-router-dom';
 export default function InsertProduct() {
     const [productName, setProductName] = useState("");
     const [productPrice, setProductPrice] = useState();
+    const [productCategory, setProductCategory] = useState("");
     const [productBarcode, setProductBarcode] = useState();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -16,6 +17,11 @@ export default function InsertProduct() {
       const setPrice = (e) => {
         setProductPrice(e.target.value);
       };
+
+      const setCategory = (e) => {
+        setProductCategory(e.target.value);
+      };
+    
     
       const setBarcode = (e) => {
         const value = e.target.value.slice(0, 12);
@@ -40,6 +46,7 @@ export default function InsertProduct() {
               console.log("Data Retrieved.");
               setProductName(data.ProductName);
               setProductPrice(data.ProductPrice);
+              setProductCategory(data.ProductCategory);
               setProductBarcode(data.ProductBarcode);
             } else {
               console.log("Something went wrong. Please try again.");
@@ -55,7 +62,7 @@ export default function InsertProduct() {
     const updateProduct = async (e) => {
         e.preventDefault();
 
-        if (!productName || !productPrice || !productBarcode) {
+        if (!productName || !productPrice || !productBarcode || !productCategory) {
             setError("*Please fill in all the required fields.");
             return;
         }
@@ -69,7 +76,7 @@ export default function InsertProduct() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode })
+                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode, "ProductCategory": productCategory })
             });
 
             await response.json();
@@ -99,6 +106,10 @@ export default function InsertProduct() {
             <div className="mt-3 col-lg-6 col-md-6 col-12">
                 <label htmlFor="product_price" className="form-label fs-4 fw-bold">Product Price</label>
                 <input type="number" onChange={setPrice} value={productPrice} className="form-control fs-5" id="product_price" placeholder="Enter Product Price" required />
+            </div>
+            <div className="mt-5 col-lg-6 col-md-6 col-12">
+                <label htmlFor="product_category" className="form-label fs-4 fw-bold">Product Category</label>
+                <input type="text" onChange={setCategory} value={productCategory} className="form-control fs-5" id="product_category" placeholder="Enter Product Category" required />
             </div>
             <div className="mt-3 mb-5 col-lg-6 col-md-6 col-12">
                 <label htmlFor="product_barcode" className="form-label fs-4 fw-bold">Product Barcode</label>

@@ -71,6 +71,7 @@ export default function Products() {
                                 <th scope="col">Product Name</th>
                                 <th scope="col">Product Price</th>
                                 <th scope="col">Product Barcode</th>
+                                <th scope="col">Product Category</th>
                                 <th scope="col">Update</th>
                                 <th scope="col">Delete</th>
                             </tr>

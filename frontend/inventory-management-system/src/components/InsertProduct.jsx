@@ -5,6 +5,7 @@ export default function InsertProduct() {
     const [productName, setProductName] = useState("");
     const [productPrice, setProductPrice] = useState();
     const [productBarcode, setProductBarcode] = useState();
+    const [productCategory, setProductCategory] = useState();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate("");
@@ -22,10 +23,14 @@ export default function InsertProduct() {
         setProductBarcode(value);
     };
 
+    const setCategory = (e) => {
+        setProductCategory(e.target.value);
+    };
+
     const addProduct = async (e) => {
         e.preventDefault();
 
-        if (!productName || !productPrice || !productBarcode) {
+        if (!productName || !productPrice || !productBarcode || !productCategory ){
             setError("*Please fill in all the required fields.");
             return;
         }
@@ -39,7 +44,7 @@ export default function InsertProduct() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode })
+                body: JSON.stringify({ "ProductName": productName, "ProductPrice": productPrice, "ProductBarcode": productBarcode, "ProductCategory": productCategory })
             });
 
             await res.json();
@@ -50,6 +55,7 @@ export default function InsertProduct() {
                 setProductPrice(0);
                 setProductBarcode(0);
                 navigate('/products');
+                setProductCategory("");
             }
             else if (res.status === 422) {
                 alert("Product is already added with that barcode.");
@@ -76,6 +82,10 @@ export default function InsertProduct() {
             <div className="mt-3 col-lg-6 col-md-6 col-12 fs-4">
                 <label htmlFor="product_price" className="form-label fw-bold">Product Price</label>
                 <input type="number" onChange={setPrice} value={productPrice} className="form-control fs-5" id="product_price" placeholder="Enter Product Price" required />
+            </div>
+            <div className="mt-3 col-lg-6 col-md-6 col-12 fs-4">
+                <label htmlFor="product_category" className="form-label fw-bold">Product Category</label>
+                <input type="text" onChange={setCategory} value={productCategory} className="form-control fs-5" id="product_category" placeholder="Enter Product Category" required />
             </div>
             <div className="mt-3 mb-5 col-lg-6 col-md-6 col-12 fs-4">
                 <label htmlFor="product_barcode" className="form-label fw-bold">Product Barcode</label>
